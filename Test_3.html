@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Творческий тест для детей</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-image: url('https://static.tildacdn.com/tild3565-6534-4332-a137-343965356131/61961c6acf50aa75fa4a.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      color: #2c2c2c;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: inline-block;
+      padding: 12px 25px;
+      border-radius: 12px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .topic {
+      background-color: rgba(255, 255, 255, 0.95);
+      margin: 25px auto;
+      padding: 25px;
+      border-radius: 20px;
+      max-width: 850px;
+      box-shadow: 3px 3px 12px rgba(0,0,0,0.25);
+    }
+
+    .question {
+      margin: 20px 0;
+      font-size: 18px;
+    }
+
+    .answers button {
+      margin: 6px 6px 6px 0;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      transition: transform 0.2s;
+    }
+
+    .answers button:hover {
+      transform: scale(1.05);
+    }
+
+    .correct { background-color: #a0e7a0; }
+    .wrong { background-color: #f7a0a0; }
+
+    #result {
+      text-align: center;
+      font-size: 22px;
+      margin-top: 25px;
+      font-weight: bold;
+      background-color: rgba(255, 255, 255, 0.85);
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 15px;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <h1>Творческий тест для детей</h1>
+
+  <div id="quiz"></div>
+  <div id="result"></div>
+
+  <script>
+    const quizData = [
+      {
+        topic: "Барельеф",
+        questions: [
+          {q:"Что такое барельеф?", a:"Это рельеф который выступает из плоскости", 
+           wrongs:["Рисунок на бумаге","Скульптура","Живопись на холсте"]},
+          {q:"Важное правило композиции?", a:"Отступ от краев листа", 
+           wrongs:["Ставить все объекты по центру","Закрашивать весь лист","Не использовать линии"]},
+          {q:"Где должен остаться 'воздух' когда рисуем портрет?", a:"Около взгляда человека", 
+           wrongs:["Вокруг рта","На одежде","В фоновом пространстве"]}
+        ]
+      },
+      {
+        topic: "Графика и штамп",
+        questions: [
+          {q:"Как раньше печатали газеты?", a:"Отпечатком с железного штампа",
+           wrongs:["Рисовали вручную","Печатали с бумаги","Использовали кисть и краску"]},
+          {q:"Что такое графика?", a:"Рисунки без цвета",
+           wrongs:["Цветные картины","Скульптуры","Фотографии"]}
+        ]
+      },
+      {
+        topic: "Контур и силуэт",
+        questions: [
+          {q:"Что такое контур?", a:"Линия которая обводит предмет",
+           wrongs:["Заливка цветом","Тень предмета","Рисунок кистью"]},
+          {q:"Что такое силуэт?", a:"Тень или фигура где видна форма предмета",
+           wrongs:["Линейный рисунок","Цветная картина","Объёмная скульптура"]}
+        ]
+      },
+      {
+        topic: "Логотип",
+        questions: [
+          {q:"Что такое логотип?", a:"Фирменный знак компании или человека",
+           wrongs:["Название компании","Рисунок на стене","Подпись художника"]},
+          {q:"Как давить на кисть чтобы получился лепесток?", a:"Давим и потом отпускаем",
+           wrongs:["Держим кисть вертикально","Ведем кисть по кругу","Только слегка касаемся"]},
+          {q:"Зачем нужен логотип?", a:"Для легкого запоминания и узнаваемости бренда",
+           wrongs:["Для украшения страницы","Чтобы красиво рисовать","Для подписания картин"]}
+        ]
+      },
+      {
+        topic: "Скульптура",
+        questions: [
+          {q:"Как называют скульптуры держащие крышу здания?", a:"Атланты",
+           wrongs:["Колонны","Барельефы","Фрески"]},
+          {q:"Скульптура это живопись?", a:"Нет. Но это тоже искусство",
+           wrongs:["Да, это то же самое","Это ремесло","Это графика"]},
+          {q:"Может ли скульптура изменить интерьер?", a:"Да.",
+           wrongs:["Нет, только декорирует улицу","Нет, она не нужна","Нет, она плоская"]},
+          {q:"В каком интерьере часто можно увидеть скульптуры?", a:"В классическом или дворцовом",
+           wrongs:["В современном минимализме","В саду с травой","В ванной комнате"]}
+        ]
+      },
+      {
+        topic: "Макет",
+        questions: [
+          {q:"Что такое масштаб?", a:"Это одна клетка или несколько равные одному метру в реальности",
+           wrongs:["Фотография объекта","Цвет рисунка","Толщина линии"]},
+          {q:"Как рисовать план комнаты?", a:"Необходимо поставить точки на каждый угол и потом их совместить",
+           wrongs:["Рисовать круги","Писать текст","Закрашивать стены"]},
+          {q:"Зачем нужен план?", a:"Чтобы знать как расположить мебель удобно",
+           wrongs:["Для украшения","Для рисунка на стене","Для фотографии"]},
+          {q:"Что такое макет?", a:"Это 3Д модель сделанная по размерам плана",
+           wrongs:["Рисунок на бумаге","Фотография комнаты","Скульптура из глины"]},
+          {q:"Как обозначают на плане окно?", a:"Двумя тонкими линиями",
+           wrongs:["Большим квадратом","Цветом","Звездочкой"]}
+        ]
+      }
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+    let score = 0;
+
+    quizData.forEach(topic => {
+      const topicDiv = document.createElement("div");
+      topicDiv.className = "topic";
+      const topicTitle = document.createElement("h2");
+      topicTitle.textContent = topic.topic;
+      topicDiv.appendChild(topicTitle);
+
+      topic.questions.forEach((item) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+        const qText = document.createElement("p");
+        qText.textContent = item.q;
+        qDiv.appendChild(qText);
+
+        const answersDiv = document.createElement("div");
+        answersDiv.className = "answers";
+
+        const answers = [item.a, ...item.wrongs];
+        answers.sort(()=>0.5-Math.random());
+
+        answers.forEach(ans => {
+          const btn = document.createElement("button");
+          btn.textContent = ans;
+          btn.onclick = () => {
+            if(ans === item.a){
+              btn.className = "correct";
+              score++;
+            } else {
+              btn.className = "wrong";
+            }
+            Array.from(answersDiv.children).forEach(b=>b.disabled=true);
+            document.getElementById("result").textContent = `Правильных ответов: ${score} из ${document.querySelectorAll(".question").length}`;
+          };
+          answersDiv.appendChild(btn);
+        });
+
+        qDiv.appendChild(answersDiv);
+        topicDiv.appendChild(qDiv);
+      });
+
+      quizContainer.appendChild(topicDiv);
+    });
+  </script>
+</body>
+</html>
